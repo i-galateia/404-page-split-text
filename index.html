@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta content="width=device-width, initial-scale=1" name="viewport" />
+
+	<link href="custom.css" rel="stylesheet" type="text/css" />
+	<link href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/183516/gilroy-webfont.css" rel="stylesheet" type="text/css" />
+
+<body>
+
+
+<div class="Menu">
+  <ul class="Menu-list" data-offset="">
+    <li class="Menu-list-item" data-offset="60" onclick="">
+      Home
+      <span class="Mask"><span>404</span></span>
+      <span class="Mask"><span>404</span></span>
+    </li>
+  </ul>
+</div>
+
+<!-- Modal content -->
+<div id="myModal" class="modal">
+  <div class="modal-content">
+    <span id="close" class="close">&times;</span>
+    <br>
+    <br>
+    <p>ERROR 404</p>
+    <p>page not found</p>
+    <br>
+   	<p>let's get you <a href="https://www.google.com/">HOME</a></p>
+   	<br>
+  </div>
+</div>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+	// Modal open-close code 
+	// Get the modal
+	var modal = document.getElementById("myModal");
+
+	
+	// When the user clicks on <span> (x), close the modal
+	 $('#close').click(function(e) { 	
+	 	 e.stopPropagation();
+	 	 modal.style.display = "none";
+	 })
+
+	// show modal
+	$(document).on('click','body',function(e){
+		if(modal.style.display ="none"){
+			modal.style.display = "block";
+			modal.style.position="absolute";
+			modal.style.top=e.pageY+'px';
+			modal.style.left=e.pageX+'px';
+
+		}
+    });
+
+
+
+    // text animation
+	var $menu = $('.Menu-list'),
+    $item = $('.Menu-list-item'),
+    w = $(window).width(), //window width
+    h = $(window).height(); //window height
+
+	$(window).on('mousemove', function(e) {
+	  var offsetX = 0.5 - e.pageX / w, //cursor position X
+	      offsetY = 0.5 - e.pageY / h, //cursor position Y
+	      dy = e.pageY - h / 2, //@h/2 = center of poster
+	      dx = e.pageX - w / 2, //@w/2 = center of poster
+	      theta = Math.atan2(dy, dx), //angle between cursor and center of poster in RAD
+	      angle = theta * 180 / Math.PI - 90, //convert rad in degrees
+	      offsetPoster = $menu.data('offset'),
+	      transformPoster = 'translate3d(0, ' + -offsetX * offsetPoster + 'px, 0) rotateX(' + (-offsetY * offsetPoster) + 'deg) rotateY(' + (offsetX * (offsetPoster * 2)) + 'deg)'; //poster transform
+
+	  //get angle between 0-360
+	  if (angle < 0) {
+	    angle = angle + 360;
+	  }
+
+	  //poster transform
+	  $menu.css('transform', transformPoster);
+
+	  //parallax for each layer
+	  $item.each(function() {
+	    var $this = $(this),
+	        offsetLayer = $this.data('offset') || 0,
+	        transformLayer = 'translate3d(' + offsetX * offsetLayer + 'px, ' + offsetY * offsetLayer + 'px, 20px)';
+
+	    $this.css('transform', transformLayer);
+	  });
+
+
+	});
+
+</script>
+
+
+
+</body>
+</html>
